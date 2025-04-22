@@ -1,0 +1,6 @@
+path_to_model: "./models/xyd_balanced_9epoch_1.469loss_0.997acc.pt"
+path_to_data: "./data_for_test/cc19.png"
+nn_type: "1"
+dropout: 0.25
+device: "cpu"
+need_transform: false
