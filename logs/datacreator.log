@@ -1,0 +1,17 @@
+2025-04-23 17:00:21,586 INFO DATA GENERATION START
+
+2025-04-23 17:00:21,593 INFO First didgits exsample path: ../digit_examples/creditcard_digits1.jpg
+2025-04-23 17:00:21,594 INFO Second didgits exsample path: ../digit_examples/creditcard_digits2.jpg
+2025-04-23 17:00:21,594 INFO Train data path: ../data/train
+2025-04-23 17:00:21,594 INFO Validation data path: ../data/validation
+2025-04-23 17:00:21,594 INFO Test data path: ../data/test
+2025-04-23 17:00:21,595 INFO Train data size for each digits example: 4000
+2025-04-23 17:00:21,595 INFO Validation data size for each digits example: 1000
+2025-04-23 17:00:21,595 INFO Test data size for each digits example: 100
+2025-04-23 17:00:21,595 INFO Kind of augmentation: False
+2025-04-23 17:00:21,596 INFO Image of digit size: 32
+2025-04-23 17:01:16,016 INFO (4000 samples of first example and 4000 samples of second example) * 10 classes are saved in ../data/train
+2025-04-23 17:01:30,843 INFO (1000 samples of first example and 1000 samples of second example) * 10 classes are saved in ../data/validation
+2025-04-23 17:01:32,446 INFO (100 samples of first example and 100 samples of second example) * 10 classes are saved in ../data/test
+2025-04-23 17:01:32,517 INFO DATA GENERATION END
+

@@ -1,0 +1,12 @@
+2025-04-23 17:01:48,294 INFO THE LEARNING PROCEDURE START
+
+2025-04-23 17:01:48,300 INFO The train and validation data path: ../data
+2025-04-23 17:01:48,300 INFO The model save path: ../models
+2025-04-23 17:01:48,301 INFO The model name: aug_bg_33_notr_{}epoch_{:.3f}loss_{:.3f}acc.pt
+2025-04-23 17:01:48,301 INFO The batch size: 128
+2025-04-23 17:01:48,307 INFO The dropout percent: 0.25
+2025-04-23 17:01:48,309 INFO NN architecture type: 1
+2025-04-23 17:01:48,309 INFO Working device type: cpu
+2025-04-23 17:01:48,309 INFO Epoch amount: 1
+2025-04-23 17:01:48,310 INFO The v2 transformation used: False
+
