@@ -1,10 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Mon Apr 14 18:48:27 2025
-
-@author: iGOR
-"""
-
 import os
 import numpy as np
 import torch
@@ -15,7 +8,7 @@ import logging
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
-handler = logging.FileHandler(r"./logs/learning_log.log")
+handler = logging.FileHandler(r"../logs/learning_log.log")
 formatter = logging.Formatter("%(asctime)s %(levelname)s %(message)s")
 
 handler.setFormatter(formatter)
@@ -26,7 +19,7 @@ logger.addHandler(handler)
 class Data_Formation(Dataset):
     
     def __init__(self, 
-                 path_to_data=r'./data', 
+                 path_to_data=r'../data', 
                  data='train',
                  need_transform=False):
         logger.info("DATA LOADING START\n")

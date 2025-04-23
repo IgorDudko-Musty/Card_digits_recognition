@@ -1,5 +1,5 @@
-path_to_model: "./models/xyd_balanced_9epoch_1.469loss_0.997acc.pt"
-path_to_data: "./data_for_test/cc19.png"
+path_to_model: "../models/simple_9_epoch_1.469_loss_0.997_acc.pt"
+path_to_data: "../data_for_test/cc01.png"
 nn_type: "1"
 dropout: 0.25
 device: "cpu"

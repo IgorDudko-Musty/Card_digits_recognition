@@ -1,10 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Tue Apr 15 16:42:32 2025
-
-@author: iGOR
-"""
-
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -12,21 +5,19 @@ from torch.utils.data import DataLoader
 from torchvision.transforms import v2
 from tqdm import tqdm
 from dataloader import Data_Formation
-import matplotlib.pyplot as plt
 import os
-import numpy as np
 import logging
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
-handler = logging.FileHandler(r"./logs/learning_log.log")
+handler = logging.FileHandler(r"../logs/learning_log.log")
 formatter = logging.Formatter("%(asctime)s %(levelname)s %(message)s")
 
 handler.setFormatter(formatter)
 logger.addHandler(handler)
 
-# [64, 64, 64, "MP", 64, 64, 64, "MP", 64, 64, 64, "MP"]
+
 class Nnet(nn.Module):
     nnets_type = {
         '1': [32,32, "MP", 32,32, "MP", 32,32, "MP"],
@@ -88,8 +79,8 @@ class Nnet(nn.Module):
 class Model_Learning():
     
     def __init__(self, 
-                 data_path=r"./data",
-                 model_path=r"./models",
+                 data_path=r"../data",
+                 model_path=r"../models",
                  model_name=r'model_{}epoch_{:.3f}loss_{:.3f}acc.pt',
                  batch_size=128, 
                  dropout=0.25,
@@ -144,9 +135,6 @@ class Model_Learning():
             # проверяем, если на новой эпохе значение функции потерь меньше, то сохраняем модель
             if best_loss is None:
                 best_loss = self.val_loss[-1]
-                # is_empty = os.listdir(self.path_to_model)
-                # if len(is_empty) != 0:
-                #     os.remove(os.path.join(self.path_to_model, *is_empty))
                 torch.save(
                           self.model.state_dict(), 
                           os.path.join(self.path_to_model, 
@@ -154,13 +142,8 @@ class Model_Learning():
                                                               best_loss, 
                                                               self.val_acc[-1]))
                           )
-                
-                
             if best_loss > self.val_loss[-1]:
                 best_loss = self.val_loss[-1]
-                # is_empty = os.listdir(self.path_to_model)
-                # if len(is_empty) != 0:
-                #     os.remove(os.path.join(self.path_to_model, *is_empty))
                 torch.save(
                           self.model.state_dict(), 
                           os.path.join(self.path_to_model, 
@@ -236,7 +219,7 @@ class Model_Learning():
 class Model_Predict():
     
     def __init__(self, 
-                 path_to_model=r"./models/model_noaug_notr_3epoch_1.463loss_1.000acc.pt",
+                 path_to_model=r"../models/model_noaug_notr_3epoch_1.463loss_1.000acc.pt",
                  nn_type='1',
                  dropout=0.25,
                  device='cpu',
@@ -249,13 +232,6 @@ class Model_Predict():
                     v2.ToDtype(torch.float32, scale=True),
                     v2.Normalize(mean=(0.5,), std=(0.5,))                         
                     ])
-            # загрузка обученной модели
-            # temp_file_list = os.listdir(path_to_model)
-            # for file in temp_file_list:
-            #     if os.path.splitext(file)[-1] == '.pt':
-                    # self.model_state_dict = torch.load(os.path.join(path_to_model, 
-                    #                                                 file), 
-                    #                                    map_location=self.device)
             self.model_state_dict = torch.load(path_to_model, 
                                                map_location=self.device,
                                                weights_only=True)        

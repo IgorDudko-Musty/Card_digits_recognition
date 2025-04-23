@@ -14,7 +14,7 @@ import os
 class Image_Proc():
     
     def __init__(self,
-                 images_path=r'./data_for_test/cc01.png'):
+                 images_path=r'../data_for_test/cc01.png'):
         # self.images_list = []
         # for image in os.listdir(images_path):
         #     path = os.path.join(images_path, image)
@@ -160,6 +160,3 @@ class Image_Proc():
                             interpolation=cv2.INTER_AREA)
         return warped    
 
-# www = Image_Proc()
-
-# qqq = www.digit_extract(www.images_list[2])

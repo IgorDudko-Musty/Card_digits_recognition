@@ -1,30 +1,23 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Sat Apr 19 17:37:47 2025
-
-@author: iGOR
-"""
-
 import yaml
 import argparse
 from nnet import Model_Learning
 import logging
 
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
-
-handler = logging.FileHandler(r"./logs/learning_log.log")
-formatter = logging.Formatter("%(asctime)s %(levelname)s %(message)s")
-
-handler.setFormatter(formatter)
-logger.addHandler(handler)
-
 
 def main():
+	logger = logging.getLogger(__name__)
+	logger.setLevel(logging.INFO)
+
+	handler = logging.FileHandler(r"../logs/learning_log.log")
+	formatter = logging.Formatter("%(asctime)s %(levelname)s %(message)s")
+
+	handler.setFormatter(formatter)
+	logger.addHandler(handler)
+	
     logger.info("THE LEARNING PROCEDURE START\n")
     parser = argparse.ArgumentParser(description="Learning start")
     parser.add_argument('--par_dir', 
-                        default=r'./parameters/parameters_learning.yml',
+                        default=r'../parameters/parameters_learning.yml',
                         type=str, 
                         help='path to the parameter yaml file')
      

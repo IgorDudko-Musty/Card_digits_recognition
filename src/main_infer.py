@@ -1,10 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Sat Apr 19 18:32:50 2025
-
-@author: iGOR
-"""
-
 import yaml
 import argparse
 import pandas as pd
@@ -16,7 +9,7 @@ import logging
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
-handler = logging.FileHandler(r"./predict.log")
+handler = logging.FileHandler(r"../predict.log")
 formatter = logging.Formatter("%(asctime)s %(levelname)s %(message)s")
 
 handler.setFormatter(formatter)
@@ -26,7 +19,7 @@ logger.addHandler(handler)
 def main():
     parser = argparse.ArgumentParser(description="Inference script")
     parser.add_argument('--par_dir',
-                        default=r'./parameters/parameters_infer.yml',
+                        default=r'../parameters/parameters_infer.yml',
                         type=str,
                         help='path to the parameter yaml file')
      
@@ -44,7 +37,7 @@ def main():
                           device=par_dict['device'],
                           need_transform=par_dict['need_transform'])
     
-    with open(r'D:\TASK\project_for_test_task\data_for_test/answers.csv', 'r') as f:
+    with open(r'../data_for_test/answers.csv', 'r') as f:
         answers = pd.read_csv(f, sep=';')
             
     true_answer = answers.numbers[answers.image \
@@ -58,8 +51,6 @@ def main():
     logger.info(f"True answer: {true_answer.iloc[0]}")
     logger.info(f"Predicted answer: {digits_list}\n\n")
         
-    # return digits_list
-
 
 if __name__ == "__main__":
     

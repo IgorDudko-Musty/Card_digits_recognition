@@ -1,8 +1,8 @@
-path_to_examples1: "./examples/creditcard_digits1.jpg"
-path_to_examples2: "./examples/creditcard_digits2.jpg"
-tr_data_path: "./data/train"
-val_data_path: "./data/validation"
-test_data_path: "./data/test"
+path_to_examples1: "../digit_examples/creditcard_digits1.jpg"
+path_to_examples2: "../digit_examples/creditcard_digits2.jpg"
+tr_data_path: "../data/train"
+val_data_path: "../data/validation"
+test_data_path: "../data/test"
 train_size: 4000
 val_size: 1000
 test_size: 100

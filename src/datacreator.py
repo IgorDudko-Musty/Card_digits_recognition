@@ -1,10 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Mon Apr 14 14:09:47 2025
-
-@author: iGOR
-"""
-
 import os
 import shutil
 import numpy as np 
@@ -18,7 +11,7 @@ import logging
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
-handler = logging.FileHandler(r"./logs/datacreator.log")
+handler = logging.FileHandler(r"../logs/datacreator.log")
 formatter = logging.Formatter("%(asctime)s %(levelname)s %(message)s")
 
 handler.setFormatter(formatter)
@@ -29,7 +22,7 @@ def main():
     logger.info("DATA GENERATION START\n")
     parser = argparse.ArgumentParser(description="Synthetic data creation")
     parser.add_argument('--par_dir', 
-                        default=r'./parameters/parameters_datacreator.yml',
+                        default=r'../parameters/parameters_datacreator.yml',
                         type=str, 
                         help='path to the parameter yaml file')
      
@@ -64,11 +57,11 @@ def main():
 
 class DataCreator():
     def __init__(self,
-                 path_to_examples1=r'./examples/creditcard_digits1.jpg',
-                 path_to_examples2=r'./examples/creditcard_digits2.jpg',
-                 tr_data_path=r"./data/train",
-                 val_data_path=r"./data/validation",
-                 test_data_path=r"./data/test",
+                 path_to_examples1=r'../digit_examples/creditcard_digits1.jpg',
+                 path_to_examples2=r'../digit_examples/creditcard_digits2.jpg',
+                 tr_data_path=r"../data/train",
+                 val_data_path=r"../data/validation",
+                 test_data_path=r"../data/test",
                  train_size=4000,
                  val_size=1000,
                  test_size=100,
@@ -79,7 +72,7 @@ class DataCreator():
         self.tr_data_path = tr_data_path
         self.val_data_path = val_data_path
         self.test_data_path = test_data_path
-        # self.digits_ex2[self.digits_ex2 <= 173] = 0
+        self.digits_ex2[self.digits_ex2 <= 173] = 0
         self.train_size = train_size
         self.val_size = val_size
         self.test_size = test_size
@@ -171,7 +164,7 @@ class DataCreator():
         number_arr_full = np.concatenate((number_arr_ex1, number_arr_ex2), axis=1)
         logger.info(f"({self.train_size} samples of first example and {self.train_size} samples of second example) * 10 classes are saved in {self.tr_data_path}")
         for i in range(10):
-            with open(os.path.join(r"./data/train", str(i), str(i) + '.npy'), 'wb') as f:
+            with open(os.path.join(self.tr_data_path, str(i), str(i) + '.npy'), 'wb') as f:
                np.save(f, number_arr_full[i])
                # np.save(f, number_arr_ex2[i])
                
@@ -241,7 +234,7 @@ class DataCreator():
         number_arr_full = np.concatenate((number_arr_ex1, number_arr_ex2), axis=1)
         logger.info(f"({self.val_size} samples of first example and {self.val_size} samples of second example) * 10 classes are saved in {self.val_data_path}")
         for i in range(10):
-            with open(os.path.join(r"./data/validation", str(i), str(i) + '.npy'), 'wb') as f:
+            with open(os.path.join(self.val_data_path, str(i), str(i) + '.npy'), 'wb') as f:
                np.save(f, number_arr_full[i])
                # np.save(f, number_arr_ex2[i])
                
@@ -311,7 +304,7 @@ class DataCreator():
         number_arr_full = np.concatenate((number_arr_ex1, number_arr_ex2), axis=1)
         logger.info(f"({self.test_size} samples of first example and {self.test_size} samples of second example) * 10 classes are saved in {self.test_data_path}")
         for i in range(10):
-            with open(os.path.join(r"./data/test", str(i), str(i) + '.npy'), 'wb') as f:
+            with open(os.path.join(self.test_data_path, str(i), str(i) + '.npy'), 'wb') as f:
                np.save(f, number_arr_full[i])
         
         
@@ -362,22 +355,6 @@ class DataCreator():
         else:
             frame = cv2.resize(image, (ran + 32, 32), interpolation = cv2.INTER_AREA)
             return frame[0:32, int(ran/2):int(ran + 32)-int(ran/2)]
-        
-    def pre_process(self, image, inv = False):
-        """Uses OTSU binarization on an image"""
-        try:
-            gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-        except:
-            gray_image = image
-            pass
-        
-        if inv == False:
-            _, th2 = cv2.threshold(gray_image, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
-        else:
-            _, th2 = cv2.threshold(gray_image, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
-        resized = cv2.resize(th2, (32,32), interpolation = cv2.INTER_AREA)
-        return resized     
-    
     
     def makedir(self):
         """Creates a new directory if it does not exist"""

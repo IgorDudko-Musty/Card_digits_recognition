@@ -1,5 +1,5 @@
-data_path: "./data"
-model_path: "./models"
+data_path: "../data"
+model_path: "../models"
 model_name: "aug_bg_33_notr_{}epoch_{:.3f}loss_{:.3f}acc.pt"
 batch_size: 128
 dropout: 0.25

@@ -4,7 +4,7 @@ save_data_on_exit = True
 save_history = True
 save_non_project_files = False
 project_type = 'empty-project-type'
-recent_files = ['datacreator.py', 'parameters\\parameters_datacreator.yml', 'dataloader.py', 'nnet.py', 'main_learning.py', 'parameters\\parameters_learning.yml', 'main_infer.py', 'parameters\\parameters_infer.yml', 'card_image_proc.py']
+recent_files = ['src\\datacreator.py', 'src\\main_infer.py', 'parameters\\parameters_infer.yml', 'src\\dataloader.py']
 
 [main]
 version = 0.2.0
