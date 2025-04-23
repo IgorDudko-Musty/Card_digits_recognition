@@ -8,23 +8,16 @@ from dataloader import Data_Formation
 import os
 import logging
 
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
-
-handler = logging.FileHandler(r"../logs/learning_log.log")
-formatter = logging.Formatter("%(asctime)s %(levelname)s %(message)s")
-
-handler.setFormatter(formatter)
-logger.addHandler(handler)
-
 
 class Nnet(nn.Module):
+    """
+    Класс, реализующий архитектуру сети
+    """
     nnets_type = {
         '1': [32,32, "MP", 32,32, "MP", 32,32, "MP"],
         '2': [32, 32, "MP", 128, 128, "MP", 512, 512, "MP"],
         '3': [32, 32, 64, "MP", 128, 128, 256, "MP", 512, 512, 512, "MP"]
         }
-
     def __init__(self, 
                  nn_type, 
                  dropout=0.25):
@@ -77,7 +70,9 @@ class Nnet(nn.Module):
 
 
 class Model_Learning():
-    
+    """
+    Класс, реализующий обучение
+    """
     def __init__(self, 
                  data_path=r"../data",
                  model_path=r"../models",
@@ -88,27 +83,40 @@ class Model_Learning():
                  device='cpu',
                  EPOCHS=10,
                  need_transform=False):
+        self.logger = logging.getLogger(__name__)
+        self.logger.setLevel(logging.INFO)
+        self.logger.handlers.clear()
+
+        handler = logging.FileHandler(r"../logs/learning_log.log")
+        formatter = logging.Formatter("%(asctime)s %(levelname)s %(message)s")
+
+        handler.setFormatter(formatter)
+        self.logger.addHandler(handler)
+        self.logger.propagate = False
+    
         self.batch_size = batch_size
         self.device = device
         self.EPOCHS = EPOCHS
         # загрузка данных для обучения
         self.path_to_model = model_path
         self.model_name = model_name
+        
         train_data = Data_Formation(data_path,
                                          data='train',
                                          need_transform=need_transform)
-        val_data = Data_Formation(data_path,
-                                  data='validation',
-                                  need_transform=need_transform)
         self.train_data_len = len(train_data)
-        self.val_data_len = len(val_data)
-        
         self.train_load = DataLoader(train_data,
                                      batch_size=self.batch_size,
                                      shuffle=True)
+        del train_data
+        val_data = Data_Formation(data_path,
+                                  data='validation',
+                                  need_transform=need_transform)
+        self.val_data_len = len(val_data)
         self.val_load = DataLoader(val_data,
                                    batch_size=self.batch_size,
                                    shuffle=False)
+        del val_data
         # создание модели, определение функции потерь для задач классификации и задание оптимизатора.
         self.model = Nnet(nn_type=nn_type,
                           dropout=dropout).to(self.device)
@@ -128,9 +136,9 @@ class Model_Learning():
         best_loss = None
         # цикл тренировки и проверки на валидационнах данных
         for epoch in range(self.EPOCHS):
-            logger.info(f"EPOCH {epoch} training")
+            self.logger.info(f"EPOCH {epoch} training")
             self.train()
-            logger.info(f"EPOCH {epoch} validation")
+            self.logger.info(f"EPOCH {epoch} validation")
             self.validation()
             # проверяем, если на новой эпохе значение функции потерь меньше, то сохраняем модель
             if best_loss is None:
@@ -184,7 +192,7 @@ class Model_Learning():
         # заносим значения функции потерь и метрики в список на каждой эпохе
         self.train_loss.append(mean_loss_train)  
         self.train_acc.append(true_answer / self.train_data_len)
-        logger.info(f"Training loss {mean_loss_train:.3f}, training accuracy {true_answer / self.train_data_len:.3f}")
+        self.logger.info(f"Training loss {mean_loss_train:.3f}, training accuracy {true_answer / self.train_data_len:.3f}")
     
     def validation(self):
         # включаем режим предсказания и запускаем стандартный цикл прогона по валидационным данным
@@ -213,11 +221,13 @@ class Model_Learning():
             # заносим значения функции потерь и метрики в список на каждой эпохе
             self.val_loss.append(mean_loss_val)  
             self.val_acc.append(true_answer / self.val_data_len)
-            logger.info(f"Validation loss {mean_loss_val:.3f}, Validation accuracy {true_answer / self.val_data_len:.3f}")
+            self.logger.info(f"Validation loss {mean_loss_val:.3f}, Validation accuracy {true_answer / self.val_data_len:.3f}")
             
    
 class Model_Predict():
-    
+    """
+    Класс, реализующи инференс модели
+    """
     def __init__(self, 
                  path_to_model=r"../models/model_noaug_notr_3epoch_1.463loss_1.000acc.pt",
                  nn_type='1',
@@ -239,25 +249,10 @@ class Model_Predict():
             self.model.load_state_dict(self.model_state_dict)
             
     def predict(self, image):
-        """
-        Метод, выполняющий предсказание модели по предоставленным данным. 
-        Может осуществлять предсказания как для данных из тестового нобор с 
-        указание предсказанной и правильно меток, так и для неизвестных данных
-        с указанием метки класса, к которому они, как считает модель, 
-        принадлежат.
-        
-        Параметры:
-        ----------
-        data: torch.tensor, list
-            Данные для классификации. Могут быть представлены как тензором pytorch, так и списком.
-        """
         if self.need_transform:
             image = self.transform(image)
-        # если данные список, преобразуем из в тензор и придаём необходимую форму
         if isinstance(image, torch.Tensor) == False:
-            # image = self.transform(image)
             image = torch.from_numpy(image).to(torch.float32).unsqueeze(0)
-        # выполняем предсказание для данных
         self.model.eval()
         with torch.no_grad():
             pred = torch.argmax(self.model(image.unsqueeze(0)))

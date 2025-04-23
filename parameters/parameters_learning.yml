@@ -4,6 +4,6 @@ model_name: "aug_bg_33_notr_{}epoch_{:.3f}loss_{:.3f}acc.pt"
 batch_size: 128
 dropout: 0.25
 nn_type: "1"
-device: "cuda"
-EPOCHS: 50
+device: "cpu"
+EPOCHS: 1
 need_transform: false

@@ -5,14 +5,14 @@ import logging
 
 
 def main():
-	logger = logging.getLogger(__name__)
-	logger.setLevel(logging.INFO)
+    logger = logging.getLogger(__name__)
+    logger.setLevel(logging.INFO)
 
-	handler = logging.FileHandler(r"../logs/learning_log.log")
-	formatter = logging.Formatter("%(asctime)s %(levelname)s %(message)s")
+    handler = logging.FileHandler(r"../logs/learning_log.log")
+    formatter = logging.Formatter("%(asctime)s %(levelname)s %(message)s")
 
-	handler.setFormatter(formatter)
-	logger.addHandler(handler)
+    handler.setFormatter(formatter)
+    logger.addHandler(handler)
 	
     logger.info("THE LEARNING PROCEDURE START\n")
     parser = argparse.ArgumentParser(description="Learning start")

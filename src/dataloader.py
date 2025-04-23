@@ -5,23 +5,24 @@ from torch.utils.data import Dataset
 from torchvision.transforms import v2
 import logging
 
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
-
-handler = logging.FileHandler(r"../logs/learning_log.log")
-formatter = logging.Formatter("%(asctime)s %(levelname)s %(message)s")
-
-handler.setFormatter(formatter)
-logger.addHandler(handler)
-
-
 
 class Data_Formation(Dataset):
-    
+    """
+    Класс, осуществляющий загрузку данных для обучения и валидации
+    """
     def __init__(self, 
                  path_to_data=r'../data', 
                  data='train',
                  need_transform=False):
+        logger = logging.getLogger(__name__)
+        logger.setLevel(logging.INFO)
+
+        handler = logging.FileHandler(r"../logs/learning_log.log")
+        formatter = logging.Formatter("%(asctime)s %(levelname)s %(message)s")
+
+        handler.setFormatter(formatter)
+        logger.addHandler(handler)
+        
         logger.info("DATA LOADING START\n")
         self.need_transform = need_transform
         
@@ -40,11 +41,11 @@ class Data_Formation(Dataset):
             self.path = os.path.join(path_to_data, data)
         else:
             self.path = os.path.join(path_to_data, data)
-        # вложений немного, поэтому использую os.listdir, а не os.walk
         classes_list = os.listdir(self.path)
         self.target_mat = torch.eye(len(classes_list), dtype=torch.float32)
 
         self.data = None
+        # т.к. данных немного - сохраняем и загружаем их одним файлом на один класс цифр
         for cl in classes_list:
             with open(os.path.join(self.path, cl, cl + '.npy'), 'rb') as f:
                 if self.data is None:
